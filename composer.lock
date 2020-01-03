@@ -4,9 +4,59 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bd13c0d6b9eab51d121b12387eaf2396",
-    "content-hash": "e7a94e39217daf3dd147dce65e7c303a",
+    "hash": "b6b08e20689f56d5dee4529ab5e65366",
+    "content-hash": "62102acaef090c4e5d9d6aae497612a5",
     "packages": [
+        {
+            "name": "metowolf/meting",
+            "version": "v1.5.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/metowolf/Meting.git",
+                "reference": "54178aa112da5db09f487d862d7ae62cbf7bc060"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/metowolf/Meting/zipball/54178aa112da5db09f487d862d7ae62cbf7bc060",
+                "reference": "54178aa112da5db09f487d862d7ae62cbf7bc060",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-openssl": "*",
+                "php": ">=5.4.0"
+            },
+            "suggest": {
+                "ext-bcmath": "Required to use BC Math calculate RSA.",
+                "ext-openssl": "Required to use OpenSSL encrypt params."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Metowolf\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "metowolf",
+                    "email": "i@i-meto.com",
+                    "homepage": "https://i-meto.com"
+                }
+            ],
+            "description": "A powerful music API framework to accelerate development.",
+            "homepage": "https://github.com/metowolf/Meting",
+            "keywords": [
+                "lightweight",
+                "lighty",
+                "music api",
+                "php music"
+            ],
+            "time": "2019-06-16 05:55:00"
+        },
         {
             "name": "workerman/channel",
             "version": "v1.0.5",

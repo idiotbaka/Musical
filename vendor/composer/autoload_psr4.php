@@ -9,6 +9,7 @@ return array(
     'Workerman\\MySQL\\' => array($vendorDir . '/workerman/mysql/src'),
     'Workerman\\' => array($vendorDir . '/workerman/workerman'),
     'PHPSocketIO\\' => array($vendorDir . '/workerman/phpsocket.io/src'),
+    'Metowolf\\' => array($vendorDir . '/metowolf/meting/src'),
     'GatewayWorker\\' => array($vendorDir . '/workerman/gateway-worker/src'),
     'Channel\\' => array($vendorDir . '/workerman/channel/src'),
 );

@@ -2,6 +2,7 @@
     "require": {
         "workerman/phpsocket.io" : ">1.0.0",
         "workerman/gateway-worker" : ">=3.0.0",
-        "workerman/mysql": "^1.0"
+        "workerman/mysql": "^1.0",
+        "metowolf/meting": "^1.5"
     }
 }
