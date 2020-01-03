@@ -1,0 +1,6 @@
+{
+    "require": {
+        "workerman/phpsocket.io" : ">1.0.0",
+        "workerman/gateway-worker" : ">=3.0.0"
+    }
+}
