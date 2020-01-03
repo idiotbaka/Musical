@@ -12,12 +12,25 @@ class Events
         echo 'Receive message from client '.$client_id.': '.$message.PHP_EOL;
         // json
         $message_data = json_decode($message, true);
+        // 如果不是json数据则不处理
         if(!$message_data) {
             return;
         }
+        // 如果不含有type则不处理
+        if(!isset($message_data['type'])) {
+            return;
+        }
+        // 根据发送类型处理
         switch ($message_data['type']) {
             // 心跳
             case 'ping':
+                return;
+
+            // 歌曲搜索
+            case 'search_music':
+                if(isset($message_data['data'])) {
+                    Ws::sendSearchMusic($message_data['data'], $client_id);
+                }
                 return;
             
             default:

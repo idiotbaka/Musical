@@ -8,10 +8,10 @@ class MusicalTimer {
 	// 定时器执行列表
 	protected $timer_list = [
 		// 测试
-		'test_timer' => ['time' => 3, 'id' => null]
+		'testTimer' => ['time' => 3, 'id' => null]
 	];
 
-	public function test_timer() {
+	public function testTimer() {
 		echo 'testTimer'.PHP_EOL;
 	}
 
@@ -35,7 +35,7 @@ class MusicalTimer {
 	 * 关闭指定定时器
 	 * @param  string $func 定时器方法名
 	 */
-	public function close_timer($func) {
+	public function closeTimer($func) {
 		if($this->timer_list[$func]['id']) {
 			Timer::del($this->timer_list[$func]['id']);
 			$this->timer_list[$func]['id'] = null;

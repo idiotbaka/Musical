@@ -6,6 +6,7 @@ use \GatewayWorker\BusinessWorker;
 use \GatewayWorker\Register;
 use \Workerman\Connection\AsyncTcpConnection;
 use \Workerman\Autoloader;
+use \Metowolf\Meting;
 
 // 全局启动验证
 if(!defined('GLOBAL_START'))
@@ -16,6 +17,10 @@ if(!defined('GLOBAL_START'))
 // 数据库
 global $db;
 $db = new \Workerman\MySQL\Connection(DB_HOST, DB_PORT, DB_USER, DB_PWD, DB_NAME);
+
+// 网易云音乐API
+global $netease_api;
+$netease_api = new Meting('netease');
 
 // Musical Worker
 $musical_worker = new Worker();
