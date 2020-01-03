@@ -27,9 +27,6 @@ if(!extension_loaded('posix'))
 define('GLOBAL_START', 1);
 
 require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/Workerman/Autoloader.php';
-require_once __DIR__ . '/Workerman/mysql/src/Connection.php';
-require_once __DIR__ . '/Workerman/channel/src/Client.php';
 
 require_once __DIR__ . '/Config.php';
 require_once __DIR__ . '/application/musical_timer.php';

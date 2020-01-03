@@ -216,7 +216,7 @@ class Connection
     {
         $this->type = 'SELECT';
         if (!is_array($cols)) {
-            $cols = array($cols);
+            $cols = explode(',', $cols);
         }
         $this->cols($cols);
         return $this;
@@ -530,12 +530,12 @@ class Connection
     {
         $parts = explode(' ', $spec);
         $count = count($parts);
-        if ($count == 2) {
+        if ($count == 2 && trim($parts[0]) != '' && trim($parts[1]) != '') {
             $this->cols[$parts[1]] = $parts[0];
         } elseif ($count == 3 && strtoupper($parts[1]) == 'AS') {
             $this->cols[$parts[2]] = $parts[0];
         } else {
-            $this->cols[] = $spec;
+            $this->cols[] = trim($spec);
         }
     }
 
@@ -1339,9 +1339,12 @@ class Connection
     {
         $quoted = $this->replaceNamesIn($val);
         $pos    = strripos($quoted, ' AS ');
-        if ($pos) {
-            $alias  = $this->replaceName(substr($quoted, $pos + 4));
-            $quoted = substr($quoted, 0, $pos) . " AS $alias";
+        if ($pos !== false) {
+            $bracket = strripos($quoted, ')');
+            if ($bracket === false) {
+                $alias = $this->replaceName(substr($quoted, $pos + 4));
+                $quoted = substr($quoted, 0, $pos) . " AS $alias";
+            }
         }
         return $quoted;
     }
@@ -1375,7 +1378,7 @@ class Connection
             return $text;
         }
 
-        $word = '[a-z_][a-z0-9_]+';
+        $word = '[a-z_][a-z0-9_]*';
 
         $find = "/(\\b)($word)\\.($word)(\\b)/i";
 
@@ -1729,14 +1732,15 @@ class Connection
      */
     protected function execute($query, $parameters = "")
     {
-    	//print_r($query."\n");
         try {
+            if (is_null($this->pdo)) { 
+                $this->connect(); 
+            }
             $this->sQuery = @$this->pdo->prepare($query);
             $this->bindMore($parameters);
             if (!empty($this->parameters)) {
                 foreach ($this->parameters as $param) {
-                    $parameters = explode("\x7F", $param);
-                    $this->sQuery->bindParam($parameters[0], $parameters[1]);
+                    $this->sQuery->bindParam($param[0], $param[1]);
                 }
             }
             $this->success = $this->sQuery->execute();
@@ -1751,8 +1755,7 @@ class Connection
                     $this->bindMore($parameters);
                     if (!empty($this->parameters)) {
                         foreach ($this->parameters as $param) {
-                            $parameters = explode("\x7F", $param);
-                            $this->sQuery->bindParam($parameters[0], $parameters[1]);
+                            $this->sQuery->bindParam($param[0], $param[1]);
                         }
                     }
                     $this->success = $this->sQuery->execute();
@@ -1780,9 +1783,9 @@ class Connection
     public function bind($para, $value)
     {
         if (is_string($para)) {
-            $this->parameters[sizeof($this->parameters)] = ":" . $para . "\x7F" . $value;
+            $this->parameters[sizeof($this->parameters)] = array(":" . $para, $value);
         } else {
-            $this->parameters[sizeof($this->parameters)] = $para . "\x7F" . $value;
+            $this->parameters[sizeof($this->parameters)] = array($para, $value);
         }
     }
 
@@ -1823,13 +1826,13 @@ class Connection
         $this->lastSql = $query;
 
         $this->execute($query, $params);
-//		print_r($query."\n");
+
         $rawStatement = explode(" ", $query);
 
         $statement = strtolower(trim($rawStatement[0]));
         if ($statement === 'select' || $statement === 'show') {
             return $this->sQuery->fetchAll($fetchmode);
-        } elseif ($statement === 'update' || $statement === 'delete') {
+        } elseif ($statement === 'update' || $statement === 'delete' || $statement === 'replace') {
             return $this->sQuery->rowCount();
         } elseif ($statement === 'insert') {
             if ($this->sQuery->rowCount() > 0) {
@@ -1946,6 +1949,9 @@ class Connection
     public function beginTrans()
     {
         try {
+            if (is_null($this->pdo)) { 
+                $this->connect(); 
+            }
             return $this->pdo->beginTransaction();
         } catch (PDOException $e) {
             // 服务端断开时重连一次

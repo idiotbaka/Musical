@@ -1,10 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d05cbf48edb0bc8b2d9b96b9db4245f5",
+    "hash": "bd13c0d6b9eab51d121b12387eaf2396",
+    "content-hash": "e7a94e39217daf3dd147dce65e7c303a",
     "packages": [
         {
             "name": "workerman/channel",
@@ -34,7 +35,79 @@
                 "MIT"
             ],
             "homepage": "http://www.workerman.net",
-            "time": "2018-07-02T02:42:37+00:00"
+            "time": "2018-07-02 02:42:37"
+        },
+        {
+            "name": "workerman/gateway-worker",
+            "version": "v3.0.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/walkor/GatewayWorker.git",
+                "reference": "38b44c95f21cd340b5a9cff3987ddb2abb9a2a38"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/walkor/GatewayWorker/zipball/38b44c95f21cd340b5a9cff3987ddb2abb9a2a38",
+                "reference": "38b44c95f21cd340b5a9cff3987ddb2abb9a2a38",
+                "shasum": ""
+            },
+            "require": {
+                "workerman/workerman": ">=3.1.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GatewayWorker\\": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "homepage": "http://www.workerman.net",
+            "keywords": [
+                "communication",
+                "distributed"
+            ],
+            "time": "2019-07-02 11:55:24"
+        },
+        {
+            "name": "workerman/mysql",
+            "version": "v1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/walkor/mysql.git",
+                "reference": "28272aa68f9ea1a482f9bb0cf709d169f772d228"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/walkor/mysql/zipball/28272aa68f9ea1a482f9bb0cf709d169f772d228",
+                "reference": "28272aa68f9ea1a482f9bb0cf709d169f772d228",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pdo": "*",
+                "ext-pdo_mysql": "*",
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Workerman\\MySQL\\": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Long-living MySQL connection for daemon.",
+            "homepage": "http://www.workerman.net",
+            "keywords": [
+                "mysql",
+                "pdo",
+                "pdo_mysql"
+            ],
+            "time": "2019-08-02 10:43:09"
         },
         {
             "name": "workerman/phpsocket.io",
@@ -68,7 +141,7 @@
             "keywords": [
                 "Socket.io"
             ],
-            "time": "2018-11-22T08:30:21+00:00"
+            "time": "2018-11-22 08:30:21"
         },
         {
             "name": "workerman/workerman",
@@ -114,7 +187,7 @@
                 "asynchronous",
                 "event-loop"
             ],
-            "time": "2019-04-05T10:35:31+00:00"
+            "time": "2019-04-05 10:35:31"
         }
     ],
     "packages-dev": [],

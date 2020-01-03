@@ -33,28 +33,28 @@ abstract class  ConnectionInterface
     /**
      * Emitted when data is received.
      *
-     * @var callable
+     * @var callback
      */
     public $onMessage = null;
 
     /**
      * Emitted when the other end of the socket sends a FIN packet.
      *
-     * @var callable
+     * @var callback
      */
     public $onClose = null;
 
     /**
      * Emitted when an error occurs with connection.
      *
-     * @var callable
+     * @var callback
      */
     public $onError = null;
 
     /**
      * Sends data on the connection.
      *
-     * @param mixed $send_buffer
+     * @param string $send_buffer
      * @return void|boolean
      */
     abstract public function send($send_buffer);
