@@ -28,7 +28,9 @@ $musical_worker->name = 'MusicalWorker';
 
 $musical_worker->onWorkerStart = function()
 {
-    
+    $musical_worker = new MusicalTimer();
+    // 将历史在线用户置为离线
+    Musical::setOfflineAll();
 };
 
 // 网站

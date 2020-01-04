@@ -148,6 +148,88 @@ class Ws {
     }
 
     /**
+     * 发送当前歌单到客户端
+     * @param  string $client_id 客户端id
+     */
+    public static function sendAlbumList($client_id) {
+        $album_list = Musical::getAlbumList();
+        $send_data = [];
+        $send_data['type'] = 'album_list';
+        $send_data['data'] = $album_list;
+        return Ws::sendToClient($send_data, $client_id);
+    }
+
+    /**
+     * 发送当前歌单到客户端
+     * @param  string $data      歌曲id
+     * @param  string $client_id 客户端id
+     */
+    public static function sendMusicUrl($data, $client_id) {
+        if(!(int)$data) {
+            return;
+        }
+        $mp3_url = Musical::getMusicUrl((int)$data);
+        $send_data = [];
+        $send_data['type'] = 'music_url';
+
+        if($mp3_url) {
+            $send_data['code'] = 200;
+            $send_data['data'] = $mp3_url;
+        }
+        else {
+            $send_data['code'] = 0;
+            $send_data['msg'] = '获取歌曲url失败。';
+        }
+        return Ws::sendToClient($send_data, $client_id);
+    }
+
+    /**
+     * 发送在线用户到客户端
+     * @param  string $client_id 客户端id
+     */
+    public static function sendOnline($client_id = '') {
+        // 获取在线列表
+        $online = Musical::getOnline();
+        $send_data = [];
+        $send_data['type'] = 'online';
+        $send_data['data'] = [
+            'number' => sizeof($online),
+            'list' => $online
+        ];
+        return Ws::sendToClient($send_data, $client_id);
+    }
+
+    /**
+     * 发送变更昵称结果
+     * @param  string $data      昵称
+     * @param  string $client_id 客户端id
+     */
+    public static function sendChangeNickname($data, $client_id) {
+        $send_data = [];
+        $send_data['type'] = 'change_nickname';
+        // 如果长度超出了限制
+        if(mb_strlen($data) > 20) {
+            $send_data['code'] = 0;
+            $send_data['msg'] = '设置昵称失败：超出了最大20的字符上限。';
+            return Ws::sendToClient($send_data, $client_id);
+        }
+        // 设置昵称
+        $change = Musical::setClientNickname($client_id, $data);
+        if($change) {
+            $send_data['code'] = 200;
+            $send_data['msg'] = '设置昵称成功。';
+            Ws::sendToClient($send_data, $client_id);
+            // 发送在线列表
+            Ws::sendOnline();
+        }
+        else {
+            $send_data['code'] = 0;
+            $send_data['msg'] = '设置昵称失败：请刷新后再试一次。';
+            return Ws::sendToClient($send_data, $client_id);
+        }
+    }
+
+    /**
      * 发送消息到客户端
      * @param  array  $send_data 发送数据（数组）
      * @param  string $client_id 客户端id

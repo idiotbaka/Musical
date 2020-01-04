@@ -39,6 +39,20 @@ class Events
                     Ws::sendOrder($message_data['data'], $client_id);
                 }
                 return;
+
+            // 请求歌曲url
+            case 'music_url':
+                if(isset($message_data['data'])) {
+                    Ws::sendMusicUrl($message_data['data'], $client_id);
+                }
+                return;
+
+            // 变更昵称
+            case 'change_nickname':
+                if(isset($message_data['data'])) {
+                    Ws::sendChangeNickname($message_data['data'], $client_id);
+                }
+                return;
             
             default:
                 break;
@@ -51,6 +65,10 @@ class Events
     */
     public static function onClose($client_id) {
         echo 'Client '.$client_id.': heartbeat timeout or disconnection, closed.'.PHP_EOL;
+        // 下线
+        Musical::setOffline($client_id);
+        // 发送最新在线用户
+        Ws::sendOnline();
     }
 
    /**
@@ -59,5 +77,11 @@ class Events
     */
     public static function onConnect($client_id) {
         echo 'Client '.$client_id.': connected.'.PHP_EOL;
+        // 发送歌单列表
+        Ws::sendAlbumList($client_id);
+        // 上线
+        Musical::setOnline($client_id);
+        // 发送最新在线用户
+        Ws::sendOnline();
     }
 }

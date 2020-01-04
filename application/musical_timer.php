@@ -7,12 +7,52 @@ class MusicalTimer {
 
 	// 定时器执行列表
 	protected $timer_list = [
-		// 测试
-		'testTimer' => ['time' => 3, 'id' => null]
+		// 歌单时间流逝
+		'albumFlowTimer' => ['time' => 1, 'id' => null]
 	];
 
-	public function testTimer() {
-		echo 'testTimer'.PHP_EOL;
+	// 定时器：歌单时间流逝
+	public function albumFlowTimer() {
+		global $db;
+		global $netease_api;
+		$album_list = Musical::getAlbumList();
+		// 有歌单
+		if($album_list) {
+			$now_played = $album_list[0];
+			// 如果是新歌曲，开始播放
+			if($now_played['is_play'] == 0) {
+				// 更新播放时间
+				$db->update('album_list')
+				->cols([
+					'play_time' => date('Y-m-d H:i:s'),
+					'is_play' => 1
+				])->where('id='.$now_played['id'])->query();
+			}
+			// 如果是正在播放歌曲
+			else {
+				$next_time = $now_played['remaining_seconds'] - 1;
+				// 如果播放完毕，设置为播放完成
+				if($next_time == 0) {
+					$db->update('album_list')
+					->cols([
+						'is_play' => 0,
+						'is_success' => 1,
+						'remaining_seconds' => 0
+					])->where('id='.$now_played['id'])->query();
+				}
+				// 如果没有播放完毕，时间流逝1秒
+				else {
+					$db->update('album_list')
+					->cols([
+						'remaining_seconds' => $next_time
+					])->where('id='.$now_played['id'])->query();
+				}
+			}
+		}
+		// TODO: 没有歌单系统自动点歌
+		else {
+
+		}
 	}
 
 	/**
