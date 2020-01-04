@@ -30,6 +30,9 @@ class Ws {
         if($result['code'] != 200) {
             return Ws::sendToClient($send_data, $client_id);
         }
+        if(!isset($result['result']['songs'])) {
+            return Ws::sendToClient($send_data, $client_id);
+        }
         foreach ($result['result']['songs'] as $v) {
             $send_data['data'][] = [
                 'id' => $v['id'],
