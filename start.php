@@ -29,6 +29,7 @@ define('GLOBAL_START', 1);
 require_once __DIR__ . '/vendor/autoload.php';
 
 require_once __DIR__ . '/Config.php';
+require_once __DIR__ . '/application/musical.php';
 require_once __DIR__ . '/application/musical_timer.php';
 require_once __DIR__ . '/application/ws.php';
 require_once __DIR__ . '/Service.php';

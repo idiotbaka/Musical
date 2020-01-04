@@ -32,6 +32,13 @@ class Events
                     Ws::sendSearchMusic($message_data['data'], $client_id);
                 }
                 return;
+
+            // 点歌
+            case 'order':
+                if(isset($message_data['data'])) {
+                    Ws::sendOrder($message_data['data'], $client_id);
+                }
+                return;
             
             default:
                 break;
