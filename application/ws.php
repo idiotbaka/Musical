@@ -179,6 +179,7 @@ class Ws {
         }
         else {
             $send_data['code'] = 0;
+            $send_data['song_id'] = (int)$data;
             $send_data['msg'] = '获取歌曲url失败。';
         }
         return Ws::sendToClient($send_data, $client_id);
