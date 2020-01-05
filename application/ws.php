@@ -131,6 +131,7 @@ class Ws {
         global $db;
         $insert_id = $db->insert('album_list')->cols($song_info)->query();
         if($insert_id) {
+            $send_data['song_id'] = (int)$data;
             $send_data['msg'] = '点歌成功！';
             Ws::sendToClient($send_data, $client_id);
             // 向全部用户广播新歌曲添加信息
@@ -142,6 +143,7 @@ class Ws {
         }
         else {
             $send_data['code'] = 0;
+            $send_data['song_id'] = (int)$data;
             $send_data['msg'] = '点歌失败：系统错误，请稍后再试。';
             return Ws::sendToClient($send_data, $client_id);
         }
