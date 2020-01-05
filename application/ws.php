@@ -174,6 +174,7 @@ class Ws {
 
         if($mp3_url) {
             $send_data['code'] = 200;
+            $send_data['song_id'] = (int)$data;
             $send_data['data'] = $mp3_url;
         }
         else {
