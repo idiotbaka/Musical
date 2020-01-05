@@ -36,7 +36,7 @@ class Ws {
         }
         foreach ($result['result']['songs'] as $v) {
             $send_data['data'][] = [
-                'id' => $v['id'],
+                'song_id' => $v['id'],
                 'name' => $v['name'],
                 'author' => $v['ar'][0]['name'],
                 'album_name' => $v['al']['name'],
