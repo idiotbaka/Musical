@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>DEMO</title>
+	<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+	<input type="text" id="input_hidden">
+	<div class="show_box">
+		<b>Musical Demo (Build 0001)</b>
+		<p>Copyright (c) 2020 idiotbaka & JokerCats. All right reserved.</p>
+		<br/>
+		<p>Welcome to Musical Demo (Last updated: 2020/01/06 UTC/GMT +08:00)</p>
+		<br/>
+		<p> * Documentation:&nbsp;https://github.com/idiotbaka/Musical/blob/master/README.md</p>
+		<p> * Github:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/idiotbaka/Musical</p>
+		<p> * Support:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/idiotbaka/Musical/issues</p>
+		<br/>
+		<p>Musical is currently the latest version.</p>
+		<p>Run 'help' to get a list of commands.</p>
+		<br/>
+	</div>
+	<div class="command_box">
+		<p><span id="nickname" class="can_input">guest</span><span class="can_input">@Musical:~# </span><span id="input" class="can_input"></span><span id="buoy">&nbsp;</span></p>
+	</div>
+	<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+	<script src="js/terminal.js"></script>
+	<script type="text/javascript">
+		terminal.run = function(command) {
+			command = command.trim();
+			if(command == 'help') {
+				terminal.append("<p>Usage: [command] [options] [args...]</p><br/>\
+				<p>" + terminal.space(2) + "help" + terminal.space(15) + "Get a list of commands</p>\
+				<p>" + terminal.space(2) + "online" + terminal.space(13) + "Get online user list</p>\
+				<p>" + terminal.space(2) + "album" + terminal.space(14) + "Get the current album list</p>\
+				<p>" + terminal.space(2) + "search &lt;keyword&gt;" + terminal.space(3) + "Search songs by keyword</p>\
+				<p>" + terminal.space(2) + "order &lt;song_id&gt;" + terminal.space(4) + "Use song_id to order songs(use the search command to get song_id)</p>\
+				<p>" + terminal.space(2) + "say &lt;message&gt;" + terminal.space(6) + "Send chat content to chat channel</p>\
+				<p>" + terminal.space(2) + "nickname &lt;name&gt;" + terminal.space(4) + "Set nickname</p>");
+				return;
+			}
+			if(command.substring(0, 9) == 'nickname ') {
+				terminal.set_nickname(command.substring(9));
+				return;
+			}
+			if(command == 'online') {
+				// todo
+				terminal.input(false);
+				return;
+			}
+			if(command.indexOf(' ') > 0) {
+				command = command.substring(0, command.indexOf(' '));
+			}
+			if(command) {
+				terminal.append('<p>' + terminal.escape(command) + ': command not found</p>');
+			}
+		}
+	</script>
+</body>
+</html>

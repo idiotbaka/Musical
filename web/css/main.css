@@ -1,0 +1,37 @@
+@font-face {
+	font-family: "DejaVuSansMono";
+	src: url("DejaVuSansMono.ttf") format("truetype");
+}
+::selection {
+	background-color: white;
+	color: black;
+}
+
+body {
+	font-family: DejaVuSansMono;
+	background-color: black;
+	color: white;
+}
+
+p {
+	margin: 4px 0;
+}
+
+.show_box {
+	text-align: left;
+	font-size: 9px;
+	font-weight: 300;
+}
+.command_box {
+	text-align: left;
+	font-size: 9px;
+	font-weight: 300;
+}
+.command_box #buoy{
+	background-color: #00ff0a;
+}
+#input_hidden {
+	opacity: 0;
+	position: absolute;
+	top: -40px;
+}
