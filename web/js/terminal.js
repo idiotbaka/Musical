@@ -99,13 +99,8 @@ $(function() {
 		}
 	});
 	$(document).keyup(function(event) {
-		// left事件
-		if(event.keyCode == 37) {
-			var command = $("#input_hidden").val();
-			$("#input_hidden").val('').focus().val(command);
-		}
-		// right事件
-		if(event.keyCode == 39) {
+		// 按键事件
+		if(event.keyCode >= 37 && event.keyCode <= 40) {
 			var command = $("#input_hidden").val();
 			$("#input_hidden").val('').focus().val(command);
 		}
