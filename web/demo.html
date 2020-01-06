@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="utf-8" />
 	<title>DEMO</title>
 	<link rel="stylesheet" href="css/main.css">
 </head>
@@ -25,53 +26,7 @@
 	</div>
 	<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 	<script src="js/terminal.js"></script>
-	<script type="text/javascript">
-		terminal.run = function(command) {
-			command = command.trim();
-			// 帮助
-			if(command == 'help') {
-				terminal.append("<p>Usage: [command] [options] [args...]</p><br/>\
-				<p>" + terminal.space(2) + "help" + terminal.space(15) + "Get a list of commands</p>\
-				<p>" + terminal.space(2) + "online" + terminal.space(13) + "Get online user list</p>\
-				<p>" + terminal.space(2) + "album" + terminal.space(14) + "Get the current album list</p>\
-				<p>" + terminal.space(2) + "search &lt;keyword&gt;" + terminal.space(3) + "Search songs by keyword</p>\
-				<p>" + terminal.space(2) + "order &lt;song_id&gt;" + terminal.space(4) + "Use song_id to order songs(use the search command to get song_id)</p>\
-				<p>" + terminal.space(2) + "say &lt;message&gt;" + terminal.space(6) + "Send chat content to chat channel</p>\
-				<p>" + terminal.space(2) + "nickname &lt;name&gt;" + terminal.space(4) + "Set nickname</p>");
-				return;
-			}
-			// 修改昵称
-			if(command.substring(0, 9) == 'nickname ') {
-				terminal.set_nickname(command.substring(9));
-				return;
-			}
-			// 获取在线列表
-			if(command == 'online') {
-				// todo
-				terminal.input(false);
-				return;
-			}
-			if(command == 'ls') {
-				return;
-			}
-			if(command == 'reboot') {
-				location.reload();
-				return;
-			}
-			if(command == 'shutdown') {
-				window.location.href = "about:blank";
-				window.close();
-				return;
-			}
-			// 未知命令
-			if(command.indexOf(' ') > 0) {
-				command = command.substring(0, command.indexOf(' '));
-			}
-			if(command) {
-				terminal.append('<p>' + terminal.escape(command) + ': command not found</p>');
-				return;
-			}
-		}
-	</script>
+	<script src="js/event.js"></script>
+	<script src="js/websocket.js"></script>
 </body>
 </html>
