@@ -64,6 +64,8 @@ $(function() {
 				terminal.history_index += 1;
 				terminal.history_index_now = terminal.history_index;
 			}
+			document.body.scrollTop = document.body.scrollHeight;
+			document.documentElement.scrollTop = document.documentElement.scrollHeight;
 		}
 		// CTRL+C事件
 		if(event.ctrlKey && event.keyCode == 67) {
