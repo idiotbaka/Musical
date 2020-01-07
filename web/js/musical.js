@@ -32,7 +32,7 @@ musical.play_new = function(url) {
 };
 // 暂停播放
 musical.pause = function() {
-	if(musical.play == false) {
+	if(musical.is_play == false) {
 		musical.error = 'error: 当前没有歌曲正在播放。';
 		return false;
 	}
@@ -41,7 +41,7 @@ musical.pause = function() {
 };
 // 开始播放
 musical.play = function() {
-	if(musical.play == false) {
+	if(musical.is_play == false) {
 		musical.error = 'error: 当前没有歌曲。';
 		return false;
 	}
@@ -50,7 +50,7 @@ musical.play = function() {
 };
 // 切换播放/暂停
 musical.toggle = function() {
-	if(musical.play == false) {
+	if(musical.is_play == false) {
 		musical.error = 'error: 当前没有歌曲。';
 		return false;
 	}
@@ -59,7 +59,7 @@ musical.toggle = function() {
 }
 // 切换到指定秒
 musical.seek = function(seconds) {
-	if(musical.play == false) {
+	if(musical.is_play == false) {
 		musical.error = 'error: 当前没有歌曲。';
 		return false;
 	}
@@ -68,9 +68,25 @@ musical.seek = function(seconds) {
 };
 // 调整音量（0.1~1）
 musical.volume = function(num) {
-	if(musical.play == false) {
+	if(musical.is_play == false) {
 		musical.error = 'error: 当前没有歌曲。';
 		return false;
 	}
 	musical.ap.volume(num, true);
+}
+// 获取音频播放时间
+musical.get_current_time = function() {
+	if(musical.is_play == false) {
+		musical.error = 'error: 当前没有歌曲。';
+		return false;
+	}
+	return musical.ap.audio.currentTime;
+}
+// 返回音频总时间
+musical.get_all_time = function() {
+	if(musical.is_play == false) {
+		musical.error = 'error: 当前没有歌曲。';
+		return false;
+	}
+	return musical.ap.audio.duration;
 }

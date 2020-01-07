@@ -5,6 +5,8 @@ terminal.run = function(command) {};
 terminal.history = [];
 terminal.history_index = 0;
 terminal.history_index_now = 0;
+// 歌单长度
+terminal.song_list = 0;
 // append显示内容
 terminal.append = function(html) {
 	$('.show_box').append(html);
@@ -37,11 +39,52 @@ terminal.input = function(key) {
 terminal.set_nickname = function(nickname) {
 	$('#nickname').html(terminal.escape(nickname));
 }
+// 设置音乐名
+terminal.set_song_name = function(song_name) {
+	$('.song_name').html(terminal.escape(song_name));
+}
+// 设置专辑名
+terminal.set_song_album = function(song_album) {
+	$('.song_album').html(terminal.escape(song_album));
+}
+// 设置时间
+terminal.set_song_time = function(song_time) {
+	$('.song_time').html(terminal.escape(song_time));
+}
 // 转义字符
 terminal.escape = function(command) {
 	return command.replace(/[<>&" ]/g, function(c) { 
 		return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',' ':'&nbsp;'}[c];
 	});
+}
+// 添加歌曲
+terminal.add_song = function(title, time) {
+	if(terminal.song_list == 10) {
+		return false;
+	}
+	terminal.song_list += 1;
+	$('.song_info-list-container').append('\
+		<div>\
+			<div class="music-single">\
+				<p><i class="music-single-index">' + terminal.song_list + '</i>. ' + title + '</p>\
+				<span>' + time + '</span>\
+			</div>\
+			<div style="clear: both;"></div>\
+		</div>\
+	');
+	return true;
+}
+// 移除歌单第一首歌曲
+terminal.remove_song = function() {
+	if(terminal.song_list <= 0) {
+		return false;
+	}
+	$(".song_info-list-container div")[0].remove();
+	$('.music-single-index').each(function(index) {
+		$(this).html(index + 1);
+	});
+	terminal.song_list -= 1;
+	return true;
 }
 $(function() {
 	$("#input_hidden")[0].focus();
@@ -118,6 +161,6 @@ $(function() {
 		else {
 			$('.song_name').css('margin-left', shifting - 7);
 		}
-	}, 300);
+	}, 200);
 });
 
