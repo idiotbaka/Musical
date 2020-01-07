@@ -34,6 +34,8 @@ terminal.input = function(key) {
 		$('.can_input').css('display', 'none');
 		terminal.input_switch = false;
 	}
+	document.body.scrollTop = document.body.scrollHeight;
+	document.documentElement.scrollTop = document.documentElement.scrollHeight;
 }
 // 设置昵称
 terminal.set_nickname = function(nickname) {
