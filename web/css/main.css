@@ -74,3 +74,10 @@ p {
 	position: fixed;
 	top: 1px;
 }
+
+#music_box {
+	width: 10px;
+	height: 10px;
+	position: fixed;
+	top: -20px;
+}
