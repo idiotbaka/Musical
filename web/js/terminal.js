@@ -107,5 +107,17 @@ $(function() {
 			$("#input_hidden").val('').focus().val(command);
 		}
 	});
+	// 歌曲名滚动显示
+	setInterval(function() {
+		var width = $('.song_name').width();
+		var shifting = $('.song_name').css('margin-left');
+		shifting = shifting.substring(0, shifting.indexOf('p'));
+		if(shifting < 0 && Math.abs(shifting) > width) {
+			$('.song_name').css('margin-left', '420px');
+		}
+		else {
+			$('.song_name').css('margin-left', shifting - 7);
+		}
+	}, 300);
 });
 

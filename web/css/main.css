@@ -32,6 +32,29 @@ p {
 .command_box #buoy{
 	background-color: #00ff0a;
 }
+.song_info {
+	text-align: left;
+	font-size: 9px;
+	font-weight: 300;
+	left: 60%;
+	top: 4px;
+	position: fixed;
+	width: 420px;
+	height: 56px;
+	overflow: hidden;
+	min-width: 420px;
+}
+.song_info .song_info-border .song_name {
+	overflow: hidden;
+    height: 16px;
+    white-space: nowrap;
+}
+@media all and (max-width: 1050px) {
+    .song_info {
+        left: 630px;
+    }
+}
+
 #input_hidden {
 	opacity: 0;
 	position: fixed;
