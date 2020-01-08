@@ -16,11 +16,21 @@ terminal.run = function(command) {
 			<p>" + terminal.space(2) + "album" + terminal.space(14) + "Get the current album list</p>\
 			<p>" + terminal.space(2) + "search &lt;keyword&gt;" + terminal.space(3) + "Search songs by keyword</p>\
 			<p>" + terminal.space(2) + "order &lt;song_id&gt;" + terminal.space(4) + "Use song_id to order songs(use the search command to get song_id)</p>\
+			<p>" + terminal.space(2) + "point &lt;index&gt;" + terminal.space(6) + "Add to album list by index</p>\
 			<p>" + terminal.space(2) + "say &lt;message&gt;" + terminal.space(6) + "Send chat content to chat channel</p>\
 			<p>" + terminal.space(2) + "nickname &lt;name&gt;" + terminal.space(4) + "Set nickname</p>");
 			break;
 		case 'search':// 搜索歌曲
 			ws.send('{"type":"search_music","data":"' + args + '"}');
+			terminal.input(false);
+			break;
+		case 'point':// 点歌
+			index = Number(terminal.escape(args))
+			if (isNaN(index)) {
+				terminal.append('<p>Warning: Songs for atomic operations, please fill in a single index.</p>');
+			}else{
+				ws.send('{"type":"order","data":' + songs_cache[index - 1] + '}');
+			}
 			terminal.input(false);
 			break;
 		case 'nickname': // 修改昵称
