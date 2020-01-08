@@ -62,6 +62,22 @@ terminal.escape = function(command) {
 		return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',' ':'&nbsp;'}[c];
 	});
 }
+// 格式化时间
+terminal.formate_time = function(song_time) {
+	song_time = parseInt(song_time);
+	minute = parseInt(song_time / 60);
+	second = song_time % 60;
+
+	if (minute < 10) {
+		minute = '0' + minute;
+	}
+
+	if (second < 10) {
+		second = '0' + second;
+	}
+
+	return minute + ':' + second;
+}
 // 添加歌曲
 terminal.add_song = function(title, time) {
 	if(terminal.song_list == 10) {
@@ -112,6 +128,8 @@ $(function() {
 	$('#input_hidden').bind('input propertychange', function() {
 		$('#input').html(terminal.escape($('#input_hidden').val()));
 	});
+	$('#buoy').css('opacity', '1');
+	$('#buoy').html('&nbsp;');
 	$(document).keydown(function(event) {
 		// 回车事件
 		if(event.keyCode == 13) {
@@ -121,13 +139,15 @@ $(function() {
 				$('#input').html('');
 				$('#input_hidden').val('');
 				if(command.trim() == 'Y' || command.trim() == 'y') {
-					$('.show_box').append('<p>Start connecting to websocket...</p>');
+					terminal.input(false);
+					$('.show_box').append('<p>Start connecting to server...</p>');
 					terminal.cookie_pass = 1;
 					terminal.allow_cookie = 1;
 					ws_start();
 				}
 				else if(command.trim() == 'N' || command.trim() == 'n') {
-					$('.show_box').append('<p>Start connecting to websocket...</p>');
+					terminal.input(false);
+					$('.show_box').append('<p>Start connecting to server...</p>');
 					terminal.cookie_pass = 1;
 					terminal.allow_cookie = 0;
 					ws_start();

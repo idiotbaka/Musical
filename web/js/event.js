@@ -15,8 +15,7 @@ terminal.run = function(command) {
 			<p>" + terminal.space(2) + "online" + terminal.space(13) + "Get online user list</p>\
 			<p>" + terminal.space(2) + "album" + terminal.space(14) + "Get the current album list</p>\
 			<p>" + terminal.space(2) + "search &lt;keyword&gt;" + terminal.space(3) + "Search songs by keyword</p>\
-			<p>" + terminal.space(2) + "order &lt;song_id&gt;" + terminal.space(4) + "Use song_id to order songs(use the search command to get song_id)</p>\
-			<p>" + terminal.space(2) + "point &lt;index&gt;" + terminal.space(6) + "Add to album list by index</p>\
+			<p>" + terminal.space(2) + "order &lt;index&gt;" + terminal.space(6) + "Use index to order songs(use the search command to get a index)</p>\
 			<p>" + terminal.space(2) + "say &lt;message&gt;" + terminal.space(6) + "Send chat content to chat channel</p>\
 			<p>" + terminal.space(2) + "nickname &lt;name&gt;" + terminal.space(4) + "Set nickname</p>");
 			break;
@@ -24,14 +23,18 @@ terminal.run = function(command) {
 			ws.send('{"type":"search_music","data":"' + args + '"}');
 			terminal.input(false);
 			break;
-		case 'point':// 点歌
+		case 'order':// 点歌
 			index = Number(terminal.escape(args))
 			if (isNaN(index)) {
 				terminal.append('<p>Warning: Songs for atomic operations, please fill in a single index.</p>');
 			}else{
-				ws.send('{"type":"order","data":' + songs_cache[index - 1] + '}');
+				if (search_cache[index - 1] != undefined) {
+					ws.send('{"type":"order","data":' + search_cache[index - 1] + '}');
+					terminal.input(false);
+				} else {
+					terminal.append('<p>Warning: Please perform a search operation first.</p>');
+				}
 			}
-			terminal.input(false);
 			break;
 		case 'nickname': // 修改昵称
 			terminal.set_nickname(args);

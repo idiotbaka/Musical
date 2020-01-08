@@ -1,11 +1,15 @@
+var search_cache = new Array();
 var songs_cache = new Array();
+var songs_cache_info = {};
+
+var step = 0;
 var ws;
 function ws_start() {
 	
 	ws = new WebSocket('ws://' + document.domain + ':5601');
 	
 	ws.onopen = function() {
-		terminal.append('<p>Websocket connected.</p>');
+		terminal.append('<p>Server connected.</p>');
 		$('#nickname').html('guest');
 		terminal.input(true);
 	}
@@ -21,10 +25,12 @@ function ws_start() {
 				if (msg['data'].length == 0) {
 					// todo 拉取默认列表
 				} else {
-					msg['data'].forEach(function(element){
-						song_time = parseInt(element.total_seconds / 60) + '分' + (element.total_seconds % 60) + '秒';
-						terminal.add_song(terminal.space(element.name), song_time);
+					msg['data'].forEach(function(element, index){
+						songs_cache[index] = element.song_id;
+						songs_cache_info[element.song_id] = {'name': element.name, 'album_name': element.album_name};
+						terminal.add_song(terminal.escape(element.name), terminal.formate_time(element.total_seconds));
 					})
+					step = msg['data'][0]['total_seconds'] - msg['data'][0]['remaining_seconds'];
 					ws.send('{"type":"music_url","data":' + msg['data'][0]['song_id'] + '}');
 				}
 				break;
@@ -34,7 +40,7 @@ function ws_start() {
 			case 'search_music': // 歌曲搜索结果
 				if (msg['code'] == 200) {
 					msg['data'].forEach(function(element, index){
-						songs_cache[index] = element.song_id;
+						search_cache[index] = element.song_id;
 						terminal.append('<p>' + (index + 1) + '. name:' + terminal.space(9) + element.name + '</p>');
 						terminal.append('<p>' + terminal.space(index.toString().length + 1) + 
 							' author:' + terminal.space(7) + element.author + '</p>');
@@ -57,11 +63,50 @@ function ws_start() {
 					terminal.append(msg['msg']);
 				}
 				break;
+			case 'album_add':// 有用户点歌成功时
+				if (!songs_cache.length) {
+					ws.send('{"type":"music_url","data":' + msg['data']['song_id'] + '}');
+				}
+
+				terminal.add_song(terminal.escape(msg['data']['name']), terminal.formate_time(msg['data']['total_seconds']));
+				songs_cache.push(msg['data']['song_id']);
+				songs_cache_info[msg['data']['song_id']] = {'name': msg['data']['name'], 'album_name': msg['data']['album_name']};				
+				break;
 		}
 
 	}
 
-	ws.onclose = function(){
-		console.log('websocket disconnected..');
+	ws.onclose = function() {
+		console.log('Server disconnected..');
 	}
+
+	musical.played = function() {
+		if (step != 0) {
+			musical.seek(step)
+		}
+		terminal.set_song_name(songs_cache_info[songs_cache[0]].name);
+		terminal.set_song_album(songs_cache_info[songs_cache[0]].album_name);
+	}
+
+	musical.ended = function() {
+		songs_cache = songs_cache.slice(1);
+		terminal.remove_song();
+
+		if (songs_cache.length) {
+			step = 0;
+			ws.send('{"type":"music_url","data":' + songs_cache[0] + '}');
+		} else {
+			terminal.set_song_name('Waiting to play...');
+			terminal.set_song_album('');
+		}
+	}
+
+	setInterval(function() {
+		if (musical.is_play) {
+			time = terminal.formate_time(musical.get_current_time()) + ' / ' + terminal.formate_time(musical.get_all_time());
+			terminal.set_song_time(time);
+		} else {
+			terminal.set_song_time('--:-- / --:--');
+		}
+	}, 1);
 }
