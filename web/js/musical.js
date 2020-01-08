@@ -9,6 +9,10 @@ musical.played = function(){};
 musical.error = '';
 // 是否在播放
 musical.is_play = false;
+// progress 开关
+musical.progress = false;
+// 音量
+musical.vol = 1;
 // 播放新的音频
 musical.play_new = function(url) {
 	if(musical.is_play == true) {
@@ -19,6 +23,7 @@ musical.play_new = function(url) {
 	    container: document.getElementById('music_box'),
 	    autoplay: true,
 	    loop: 'none',
+	    volume: 0,
 	    audio: [{
 	        name: '0',
 	        artist: '0',
@@ -27,11 +32,16 @@ musical.play_new = function(url) {
 	});
 	musical.ap.on('ended', function() {
 		musical.is_play = false;
+		musical.progress = false;
 		musical.ended();
 	});
-	musical.ap.on('play', function() {
-		musical.is_play = true;
-		musical.played();
+	musical.ap.on('progress', function() {
+		if(musical.progress == false) {
+			musical.is_play = true;
+			musical.played();
+			musical.volume(musical.vol);
+		}
+		musical.progress = true;
 	});
 	return true;
 };
@@ -78,6 +88,7 @@ musical.volume = function(num) {
 		return false;
 	}
 	musical.ap.volume(num, true);
+	musical.vol = num;
 }
 // 获取音频播放时间
 musical.get_current_time = function() {
