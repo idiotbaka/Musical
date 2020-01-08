@@ -3,6 +3,8 @@ var musical = new Object();
 musical.ap = null;
 // 回调方法：播放结束事件
 musical.ended = function(){};
+// 回调方法：播放开始事件
+musical.played = function(){};
 // 错误文本
 musical.error = '';
 // 是否在播放
@@ -23,10 +25,13 @@ musical.play_new = function(url) {
 	        url: url
 	    }]
 	});
-	musical.is_play = true;
-	musical.ap.on('ended', function(){
+	musical.ap.on('ended', function() {
 		musical.is_play = false;
 		musical.ended();
+	});
+	musical.ap.on('play', function() {
+		musical.is_play = true;
+		musical.played();
 	});
 	return true;
 };
