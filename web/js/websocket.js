@@ -64,13 +64,13 @@ function ws_start() {
 				}
 				break;
 			case 'album_add':// 有用户点歌成功时
-				if (!songs_cache.length) {
-					ws.send('{"type":"music_url","data":' + msg['data']['song_id'] + '}');
-				}
-
-				terminal.add_song(terminal.escape(msg['data']['name']), terminal.formate_time(msg['data']['total_seconds']));
 				songs_cache.push(msg['data']['song_id']);
-				songs_cache_info[msg['data']['song_id']] = {'name': msg['data']['name'], 'album_name': msg['data']['album_name']};				
+				songs_cache_info[msg['data']['song_id']] = {'name': msg['data']['name'], 'album_name': msg['data']['album_name']};
+				// 如果缓存中只有一首歌曲，直接播放
+				if (songs_cache.length == 1) {
+					ws.send('{"type":"music_url","data":' + msg['data']['song_id'] + '}');					
+				}
+				terminal.add_song(terminal.escape(msg['data']['name']), terminal.formate_time(msg['data']['total_seconds']));
 				break;
 		}
 
@@ -91,9 +91,9 @@ function ws_start() {
 	musical.ended = function() {
 		songs_cache = songs_cache.slice(1);
 		terminal.remove_song();
+		step = 0;
 
 		if (songs_cache.length) {
-			step = 0;
 			ws.send('{"type":"music_url","data":' + songs_cache[0] + '}');
 		} else {
 			terminal.set_song_name('Waiting to play...');
