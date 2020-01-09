@@ -49,9 +49,17 @@ class MusicalTimer {
 				}
 			}
 		}
-		// TODO: 没有歌单系统自动点歌
+		// 没有歌单系统自动点歌
 		else {
-
+			$hot_music = $db->select('*')
+			->from('album_hot_music')
+			->where('status=1')
+			->query();
+			if(!$hot_music) {
+				return;
+			}
+			$song = $hot_music[rand(0, count($hot_music) - 1)];
+			Ws::sendOrder($song['song_id'], -1);
 		}
 	}
 

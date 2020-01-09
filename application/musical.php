@@ -171,4 +171,40 @@ class Musical {
 		}
 		return false;
 	}
+
+	/**
+	 * 同步热门歌单
+	 * @return boolean 同步结果
+	 */
+	public static function syncHotMusic() {
+		global $db;
+		global $netease_api;
+		$hot_list = $netease_api->playlist(3778678);
+		$hot_list = json_decode($hot_list, true);
+		if(!$hot_list) {
+			echo 'Sync hot music failed.(-1)'.PHP_EOL;
+			return false;
+		}
+		if($hot_list['code'] != 200) {
+			echo 'Sync hot music failed.(-2)'.PHP_EOL;
+			return false;
+		}
+		if(!isset($hot_list['privileges'])) {
+			echo 'Sync hot music failed.(-3)'.PHP_EOL;
+			return false;
+		}
+		foreach ($hot_list['privileges'] as $v) {
+			$is_sync = $db->select('song_id')
+			->from('album_hot_music')
+			->where('song_id='.$v['id'])
+			->row();
+			if(!$is_sync) {
+				$db->insert('album_hot_music')->cols([
+					'song_id' => $v['id']
+				])->query();
+			}
+		}
+		echo 'Sync hot music success.'.PHP_EOL;
+		return true;
+	}
 }
