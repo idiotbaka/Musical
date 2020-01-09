@@ -27,8 +27,8 @@ function ws_start() {
 				} else {
 					msg['data'].forEach(function(element, index){
 						songs_cache[index] = element.song_id;
-						songs_cache_info[element.song_id] = {'name': element.name, 'album_name': element.album_name};
-						terminal.add_song(terminal.escape(element.name), terminal.formate_time(element.total_seconds));
+						songs_cache_info[element.song_id] = {'name': element.name + ' - ' + element.author, 'album_name': element.album_name};
+						terminal.add_song(terminal.escape(element.name + ' - ' + element.author), terminal.formate_time(element.total_seconds));
 					})
 					step = msg['data'][0]['total_seconds'] - msg['data'][0]['remaining_seconds'];
 					ws.send('{"type":"music_url","data":' + msg['data'][0]['song_id'] + '}');
@@ -65,12 +65,12 @@ function ws_start() {
 				break;
 			case 'album_add':// 有用户点歌成功时
 				songs_cache.push(msg['data']['song_id']);
-				songs_cache_info[msg['data']['song_id']] = {'name': msg['data']['name'], 'album_name': msg['data']['album_name']};
+				songs_cache_info[msg['data']['song_id']] = {'name': msg['data']['name'] + ' - ' + msg['data']['author'], 'album_name': msg['data']['album_name']};
 				// 如果缓存中只有一首歌曲，直接播放
 				if (songs_cache.length == 1) {
 					ws.send('{"type":"music_url","data":' + msg['data']['song_id'] + '}');					
 				}
-				terminal.add_song(terminal.escape(msg['data']['name']), terminal.formate_time(msg['data']['total_seconds']));
+				terminal.add_song(terminal.escape(msg['data']['name'] + ' - ' + msg['data']['author']), terminal.formate_time(msg['data']['total_seconds']));
 				break;
 		}
 
@@ -84,8 +84,6 @@ function ws_start() {
 		if (step != 0) {
 			musical.seek(step)
 		}
-		terminal.set_song_name(songs_cache_info[songs_cache[0]].name);
-		terminal.set_song_album(songs_cache_info[songs_cache[0]].album_name);
 	}
 
 	musical.ended = function() {
@@ -95,9 +93,6 @@ function ws_start() {
 
 		if (songs_cache.length) {
 			ws.send('{"type":"music_url","data":' + songs_cache[0] + '}');
-		} else {
-			terminal.set_song_name('Waiting to play...');
-			terminal.set_song_album('');
 		}
 	}
 
@@ -105,8 +100,14 @@ function ws_start() {
 		if (musical.is_play) {
 			time = terminal.formate_time(musical.get_current_time()) + ' / ' + terminal.formate_time(musical.get_all_time());
 			terminal.set_song_time(time);
+			if(songs_cache[0]) {
+				terminal.set_song_name(songs_cache_info[songs_cache[0]].name);
+				terminal.set_song_album(songs_cache_info[songs_cache[0]].album_name);
+			}
 		} else {
 			terminal.set_song_time('--:-- / --:--');
+			terminal.set_song_name('Waiting to play...');
+			terminal.set_song_album('');
 		}
-	}, 1);
+	}, 100);
 }
