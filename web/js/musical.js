@@ -16,8 +16,7 @@ musical.vol = 1;
 // 播放新的音频
 musical.play_new = function(url) {
 	if(musical.is_play == true) {
-		musical.error = 'error: 当前正在播放中，请等待播放结束。';
-		return false;
+		musical.is_play = false;
 	}
 	musical.ap = new APlayer({
 	    container: document.getElementById('music_box'),
@@ -37,11 +36,11 @@ musical.play_new = function(url) {
 	});
 	musical.ap.on('progress', function() {
 		if(musical.progress == false) {
+			musical.progress = true;
 			musical.is_play = true;
 			musical.played();
 			musical.volume(musical.vol);
 		}
-		musical.progress = true;
 	});
 	return true;
 };
