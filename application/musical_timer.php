@@ -8,7 +8,9 @@ class MusicalTimer {
 	// 定时器执行列表
 	protected $timer_list = [
 		// 歌单时间流逝
-		'albumFlowTimer' => ['time' => 1, 'id' => null]
+		'albumFlowTimer' => ['time' => 1, 'id' => null],
+		// 自动同步热门歌单
+		'syncHotMusic' => ['time' => 86400, 'id' => null]
 	];
 
 	// 定时器：歌单时间流逝
@@ -65,6 +67,12 @@ class MusicalTimer {
 			$song = $hot_music[rand(0, count($hot_music) - 1)];
 			Ws::sendOrder($song['song_id'], -1);
 		}
+	}
+
+	// 定时器：自动同步热门歌单
+	public function syncHotMusic() {
+		// 热门歌单同步
+    	Musical::syncHotMusic();
 	}
 
 	/**
