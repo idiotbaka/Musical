@@ -13,6 +13,10 @@ class MusicalTimer {
 
 	// 定时器：歌单时间流逝
 	public function albumFlowTimer() {
+		// 如果没有用户在线，则不流逝时间
+		if(!count(Musical::getOnline())) {
+			return;
+		}
 		global $db;
 		global $netease_api;
 		$album_list = Musical::getAlbumList();
