@@ -127,6 +127,8 @@ $(function() {
 	});
 	$('#input_hidden').bind('input propertychange', function() {
 		$('#input').html(terminal.escape($('#input_hidden').val()));
+		document.body.scrollTop = document.body.scrollHeight;
+		document.documentElement.scrollTop = document.documentElement.scrollHeight;
 	});
 	$('#buoy').css('opacity', '1');
 	$('#buoy').html('&nbsp;');
