@@ -55,6 +55,17 @@ terminal.run = function(command) {
 			musical.volume(args);
 			break;
 		case 'ls':
+			terminal.append('<p>README</p>');
+			break;
+		case 'cat':
+			if(args == 'README' || args == '~/README') {
+				terminal.append('\
+					<p>PHP是世界上最好的语言。</p>\
+				');
+			}
+			else {
+				terminal.append('<p>cat: ' + terminal.escape(args) + ': No such file or directory</p>');
+			}
 			break;
 		case 'reboot':
 			location.reload();
