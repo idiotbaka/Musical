@@ -55,10 +55,6 @@ musical.pause = function() {
 };
 // 开始播放
 musical.play = function() {
-	if(musical.is_play == false) {
-		musical.error = 'error: 当前没有歌曲。';
-		return false;
-	}
 	musical.ap.play();
 	return true;
 };

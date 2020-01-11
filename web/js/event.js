@@ -74,6 +74,9 @@ terminal.run = function(command) {
 			window.location.href = "about:blank";
 			window.close();
 			break;
+		case 'play':
+			musical.play();
+			break;
 		default:
 			if(command) {
 				terminal.append('<p>' + terminal.escape(command) + ': command not found</p>');
