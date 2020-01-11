@@ -41,9 +41,8 @@
 		<div class="song_info-chat">
 			<p>[Chat] <span id="online-number"></span></p>
 			<div class="song_info-chat-container">
-				<p>------------ HEADER ------------</p>
 				<div class="song_info-chat-container-msg">
-
+					<p style="color: #ffeb3b;">Only the last 10 chat messages are displayed.</p>
 				</div>
 			</div>
 		</div>
