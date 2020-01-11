@@ -53,6 +53,13 @@ class Events
                     Ws::sendChangeNickname($message_data['data'], $client_id);
                 }
                 return;
+
+            // 聊天
+            case 'say':
+                if(isset($message_data['data'])) {
+                    Ws::sendChatMsg($message_data['data'], $client_id);
+                }
+                return;
             
             default:
                 break;
@@ -83,5 +90,7 @@ class Events
         Musical::setOnline($client_id);
         // 发送最新在线用户
         Ws::sendOnline();
+        // 发送历史聊天记录
+        Ws::sendHistoryChatMsg($client_id);
     }
 }

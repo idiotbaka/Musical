@@ -5,12 +5,25 @@ var songs_cache_info = {};
 var step = 0;
 var ws;
 function ws_start() {
-	
+	terminal.set_nickname('');
 	ws = new WebSocket('ws://' + document.domain + ':5601');
-	
+	$('.song_info').css('display', '');
+
 	ws.onopen = function() {
 		terminal.append('<p>Server connected.</p>');
-		$('#nickname').html('guest');
+		// 如果设置了cookie开关
+		if(terminal.allow_cookie) {
+			nickname = terminal.get_cookie('nickname');
+			if(nickname) {
+				ws.send('{"type":"change_nickname", "data":"' + nickname + '"}');
+			}
+			else {
+				terminal.set_nickname('guest');
+			}
+		}
+		else {
+			terminal.set_nickname('guest');
+		}
 		terminal.input(true);
 	}
 
@@ -33,9 +46,6 @@ function ws_start() {
 					step = msg['data'][0]['total_seconds'] - msg['data'][0]['remaining_seconds'];
 					ws.send('{"type":"music_url","data":' + msg['data'][0]['song_id'] + '}');
 				}
-				break;
-			case 'online': // 获取在线用户列表
-
 				break;
 			case 'search_music': // 歌曲搜索结果
 				if (msg['code'] == 200) {
@@ -71,6 +81,33 @@ function ws_start() {
 					ws.send('{"type":"music_url","data":' + msg['data']['song_id'] + '}');					
 				}
 				terminal.add_song(terminal.escape(msg['data']['name'] + ' - ' + msg['data']['author']), terminal.formate_time(msg['data']['total_seconds']));
+				break;
+			case 'online':
+				terminal.set_online_number(msg['data']['number']);
+				break;
+			case 'history_chat_msg':
+				msg['data'].forEach(function(element) {
+					terminal.add_chat_msg(element.send_time, element.nickname, element.msg);
+				});
+				break;
+			case 'chat_msg_add':
+				terminal.add_chat_msg(msg['data']['send_time'], msg['data']['nickname'], msg['data']['msg']);
+				break;
+			case 'change_nickname':
+				if(msg['code'] == 200) {
+					terminal.set_nickname(msg['data']);
+					terminal.set_cookie('nickname', msg['data'], 365);
+				}
+				else {
+					terminal.append(msg['msg']);
+				}
+				terminal.input(true);
+				break;
+			case 'say':
+				if(msg['code'] != 200) {
+					terminal.append(msg['msg']);
+				}
+				terminal.input(true);
 				break;
 		}
 

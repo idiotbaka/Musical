@@ -221,7 +221,7 @@ class Ws {
         $change = Musical::setClientNickname($client_id, $data);
         if($change) {
             $send_data['code'] = 200;
-            $send_data['msg'] = '设置昵称成功。';
+            $send_data['data'] = $data;
             Ws::sendToClient($send_data, $client_id);
             // 发送在线列表
             Ws::sendOnline();
@@ -231,6 +231,50 @@ class Ws {
             $send_data['msg'] = '设置昵称失败：请刷新后再试一次。';
             return Ws::sendToClient($send_data, $client_id);
         }
+    }
+
+    /**
+     * 发送聊天消息
+     * @param  string $data      聊天消息
+     * @param  string $client_id 客户端id
+     */
+    public static function sendChatMsg($data, $client_id) {
+        global $db;
+        $send_data = [];
+        $send_data['type'] = 'say';
+        // 获取用户昵称
+        $nickname = Musical::getClientNickname($client_id);
+        // 判断是否超出上限
+        if(mb_strlen($data) > Musical::getSystemConfig('max_chat_msg_length')) {
+            $send_data['code'] = 0;
+            $send_data['msg'] = '发送消息失败：超出了最大字符数上限：'.Musical::getSystemConfig('max_chat_msg_length').'。';
+            return Ws::sendToClient($send_data, $client_id);
+        }
+        Musical::addChatMsg($nickname, $data);
+        $send_data['code'] = 200;
+        $send_data['msg'] = '发送消息成功！';
+        Ws::sendToClient($send_data, $client_id);
+        // 发送消息到全部在线用户
+        Ws::sendToClient([
+            'type' => 'chat_msg_add',
+            'data' => [
+                'nickname' => $nickname,
+                'msg' => $data,
+                'send_time' => date('Y-m-d H:i:s')
+            ]
+        ]);
+    }
+
+    /**
+     * 发送历史聊天消息
+     * @param  string $client_id 客户端id
+     */
+    public static function sendHistoryChatMsg($client_id) {
+        $chat_msg = Musical::getHistoryChatMsg();
+        $send_data = [];
+        $send_data['type'] = 'history_chat_msg';
+        $send_data['data'] = $chat_msg;
+        Ws::sendToClient($send_data, $client_id);
     }
 
     /**

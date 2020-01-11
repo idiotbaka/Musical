@@ -10,6 +10,7 @@ terminal.song_list = 0;
 // cookie相关
 terminal.allow_cookie = 0;
 terminal.cookie_pass = 0;
+terminal.nickname = '';
 // append显示内容
 terminal.append = function(html) {
 	$('.show_box').append(html);
@@ -43,6 +44,11 @@ terminal.input = function(key) {
 // 设置昵称
 terminal.set_nickname = function(nickname) {
 	$('#nickname').html(terminal.escape(nickname));
+	terminal.nickname = nickname;
+}
+// 设置在线人数
+terminal.set_online_number = function(number) {
+	$('#online-number').html('Online: ' + number);
 }
 // 设置音乐名
 terminal.set_song_name = function(song_name) {
@@ -106,6 +112,32 @@ terminal.remove_song = function() {
 	});
 	terminal.song_list -= 1;
 	return true;
+}
+// 添加聊天消息
+terminal.add_chat_msg = function(time, nickname, message) {
+	$('.song_info-chat-container-msg').append('\
+		<p>[' + terminal.escape(time) + '] ' + 
+		terminal.escape(nickname) + ': ' + 
+		terminal.escape(message) + '</p>\
+	');
+	$('.song_info-chat-container').scrollTop($('.song_info-chat-container').height());
+}
+terminal.set_cookie = function(name, value, day) {
+	var date = new Date();
+	date.setTime(date.getTime() + (day*86400000));
+	var expires = 'expires=' + date.toGMTString();
+	document.cookie = name + '=' + value + '; ' + expires;
+}
+terminal.get_cookie = function(name) {
+	name += '=';
+	var cookie = document.cookie.split(';');
+	for(var i = 0; i<cookie.length; i++) {
+		var result = cookie[i].trim();
+		if(result.indexOf(name) == 0) {
+			return result.substring(name.length);
+		}
+	}
+	return '';
 }
 $(function() {
 	terminal.append('\

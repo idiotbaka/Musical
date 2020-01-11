@@ -25,7 +25,7 @@
 	<div class="command_box">
 		<p><span id="nickname" class="can_input" style="display: none;">guest</span><span class="can_input" style="display: none;">@Musical:~# </span><span id="input" class="can_input"></span><span id="buoy" style="opacity: 0;"></span></p>
 	</div>
-	<div class="song_info">
+	<div class="song_info" style="display: none;">
 		<div class="song_info-border">
 			<p>[Now Playing]</p>
 			<span class="song_name" style="margin-left: -1px;">Waiting to play...</span>
@@ -36,6 +36,15 @@
 			<p>[Music List]</p>
 			<div class="song_info-list-container">
 				
+			</div>
+		</div>
+		<div class="song_info-chat">
+			<p>[Chat] <span id="online-number"></span></p>
+			<div class="song_info-chat-container">
+				<p>------------ HEADER ------------</p>
+				<div class="song_info-chat-container-msg">
+
+				</div>
 			</div>
 		</div>
 	</div>

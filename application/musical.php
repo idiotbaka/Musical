@@ -173,6 +173,59 @@ class Musical {
 	}
 
 	/**
+	 * 获取用户昵称
+	 * @param  string  $client_id   客户端id
+	 * @return string               昵称
+	 */
+	public static function getClientNickname($client_id) {
+		global $db;
+		$client = $db->select('id,nickname')
+		->from('system_client')
+		->where('client_id="'.$client_id.'"')
+		->row();
+		if($client['nickname']) {
+			return $client['nickname'];
+		}
+		else {
+			return Musical::getSystemConfig('default_nickname').$client['id'];
+		}
+	}
+
+	public static function getChatMsg() {
+
+	}
+
+	/**
+	 * 添加聊天信息
+	 * @param  string  $nickname   昵称
+	 * @param  string  $msg        消息
+	 */
+	public static function addChatMsg($nickname, $msg) {
+		global $db;
+		$db->insert('system_chat_msg')->cols([
+			'nickname' => $nickname,
+			'msg' => $msg,
+			'send_time' => date('Y-m-d H:i:s')
+		])->query();
+	}
+
+	/**
+	 * 获取历史聊天消息
+	 */
+	public static function getHistoryChatMsg() {
+		global $db;
+		$history_chat_msg = $db
+		->select('nickname,msg,send_time')
+		->from('system_chat_msg')
+		->orderByDESC(['send_time'])
+		->limit(10)
+		->query();
+		$send_time = array_column($history_chat_msg, 'send_time');
+		array_multisort($send_time, SORT_ASC, $history_chat_msg);
+		return $history_chat_msg;
+	}
+
+	/**
 	 * 同步热门歌单
 	 * @return boolean 同步结果
 	 */

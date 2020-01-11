@@ -37,10 +37,19 @@ terminal.run = function(command) {
 			}
 			break;
 		case 'nickname': // 修改昵称
-			terminal.set_nickname(args);
+			ws.send('{"type":"change_nickname", "data":"' + args + '"}');
+			terminal.input(false);
+			break;
+		case 'say':
+			if(terminal.nickname == 'guest') {
+				terminal.append('<p>Please set a nickname first. Use command "nickname &lt;nickname&gt;" to set.</p>');
+				break;
+			}
+			ws.send('{"type":"say", "data":"' + args + '"}');
+			terminal.input(false);
 			break;
 		case 'online': // 获取在线列表
-			terminal.input(false);
+			//terminal.input(false);
 			break;
 		case 'ls':
 			break;

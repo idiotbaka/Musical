@@ -40,33 +40,47 @@ p {
 	top: 4px;
 	position: fixed;
 	width: 420px;
-	height: 324px;
 	overflow: hidden;
 	min-width: 420px;
 }
+.song_info .song_info-border {
+	height: 70px;
+}
 .song_info .song_info-border .song_name {
 	overflow: hidden;
-    height: 16px;
-    white-space: nowrap;
+	height: 16px;
+	white-space: nowrap;
 }
 .song_info .song_info-list {
 	margin-top: 20px;
+	height: 230px;
 }
 .song_info .song_info-list .music-single p{
 	float: left;
 	margin: 2px 0;
-    width: 360px;
-    overflow: hidden;
-    white-space: nowrap;
+	width: 360px;
+	overflow: hidden;
+	white-space: nowrap;
 }
 .song_info .song_info-list .music-single span{
 	float: right;
 	margin: 2px 0;
 }
+.song_info .song_info-chat {
+	height: 200px;
+}
+.song_info .song_info-chat .song_info-chat-container {
+	height: 186px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+.song_info .song_info-chat .song_info-chat-container::-webkit-scrollbar {
+	display: none;
+}
 @media all and (max-width: 1050px) {
-    .song_info {
-        left: 630px;
-    }
+	.song_info {
+		left: 630px;
+	}
 }
 
 #input_hidden {
