@@ -12,11 +12,10 @@ terminal.run = function(command) {
 		case 'help': // 帮助
 			terminal.append("<p>Usage: [command] [options] [args...]</p><br/>\
 			<p>" + terminal.space(2) + "help" + terminal.space(15) + "Get a list of commands</p>\
-			<p>" + terminal.space(2) + "online" + terminal.space(13) + "Get online user list</p>\
-			<p>" + terminal.space(2) + "album" + terminal.space(14) + "Get the current album list</p>\
 			<p>" + terminal.space(2) + "search &lt;keyword&gt;" + terminal.space(3) + "Search songs by keyword</p>\
 			<p>" + terminal.space(2) + "order &lt;index&gt;" + terminal.space(6) + "Use index to order songs(use the search command to get a index)</p>\
 			<p>" + terminal.space(2) + "say &lt;message&gt;" + terminal.space(6) + "Send chat content to chat channel</p>\
+			<p>" + terminal.space(2) + "vol &lt;volume&gt;" + terminal.space(7) + "Set the volume(0 ~ 1, such as 0.5)</p>\
 			<p>" + terminal.space(2) + "nickname &lt;name&gt;" + terminal.space(4) + "Set nickname</p>");
 			break;
 		case 'search':// 搜索歌曲
@@ -48,8 +47,12 @@ terminal.run = function(command) {
 			ws.send('{"type":"say", "data":"' + args + '"}');
 			terminal.input(false);
 			break;
-		case 'online': // 获取在线列表
-			//terminal.input(false);
+		case 'vol':
+			args = parseFloat(args);
+			if(args < 0 || args > 1) {
+				terminal.append('<p>Please enter a number between 0 and 1.</p>');
+			}
+			musical.volume(args);
 			break;
 		case 'ls':
 			break;

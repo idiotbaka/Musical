@@ -9,7 +9,10 @@ class Events
     * @param mixed $message
     */
     public static function onMessage($client_id, $message) {
-        echo 'Receive message from client '.$client_id.': '.$message.PHP_EOL;
+        // 非心跳则输出
+        if($message != '{"type":"pong"}') {
+            echo 'Receive message from client '.$client_id.': '.$message.PHP_EOL;
+        }
         // json
         $message_data = json_decode($message, true);
         // 如果不是json数据则不处理

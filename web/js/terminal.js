@@ -114,12 +114,21 @@ terminal.remove_song = function() {
 	return true;
 }
 // 添加聊天消息
-terminal.add_chat_msg = function(time, nickname, message) {
-	$('.song_info-chat-container-msg').append('\
-		<p>[' + terminal.escape(time) + '] ' + 
-		terminal.escape(nickname) + ': ' + 
-		terminal.escape(message) + '</p>\
-	');
+terminal.add_chat_msg = function(time, nickname = '', message) {
+	if(nickname) {
+		$('.song_info-chat-container-msg').append('\
+			<p>[' + terminal.escape(time) + '] ' + 
+			terminal.escape(nickname) + ': ' + 
+			terminal.escape(message) + '</p>\
+		');
+	}
+	else {
+		$('.song_info-chat-container-msg').append('\
+			<p style="color: #ff5722; font-weight: 600;">[' + terminal.escape(time) + '] ' + 
+			'System: ' + 
+			terminal.escape(message) + '</p>\
+		');
+	}
 	$('.song_info-chat-container').scrollTop($('.song_info-chat-container').height());
 }
 terminal.set_cookie = function(name, value, day) {

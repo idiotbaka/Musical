@@ -35,9 +35,9 @@ musical.play_new = function(url) {
 		musical.ended();
 	});
 	musical.ap.on('progress', function() {
+		musical.is_play = true;
 		if(musical.progress == false) {
 			musical.progress = true;
-			musical.is_play = true;
 			musical.played();
 			musical.volume(musical.vol);
 		}

@@ -74,13 +74,16 @@ function ws_start() {
 				}
 				break;
 			case 'album_add':// 有用户点歌成功时
-				songs_cache.push(msg['data']['song_id']);
-				songs_cache_info[msg['data']['song_id']] = {'name': msg['data']['name'] + ' - ' + msg['data']['author'], 'album_name': msg['data']['album_name']};
+				songs_cache.push(msg['data']['song_info']['song_id']);
+				songs_cache_info[msg['data']['song_info']['song_id']] = {'name': msg['data']['song_info']['name'] + ' - ' + msg['data']['song_info']['author'], 'album_name': msg['data']['song_info']['album_name']};
 				// 如果缓存中只有一首歌曲，直接播放
 				if (songs_cache.length == 1) {
-					ws.send('{"type":"music_url","data":' + msg['data']['song_id'] + '}');					
+					ws.send('{"type":"music_url","data":' + msg['data']['song_info']['song_id'] + '}');					
 				}
-				terminal.add_song(terminal.escape(msg['data']['name'] + ' - ' + msg['data']['author']), terminal.formate_time(msg['data']['total_seconds']));
+				terminal.add_song(terminal.escape(msg['data']['song_info']['name'] + ' - ' + msg['data']['song_info']['author']), terminal.formate_time(msg['data']['song_info']['total_seconds']));
+				if(msg['data']['is_server'] != 1) {
+					terminal.add_chat_msg(msg['data']['time'], '', 'User ' + msg['data']['nickname'] + ' on-demand music: ' + msg['data']['song_info']['name'] + ' - ' + msg['data']['song_info']['author'] + '.');
+				}
 				break;
 			case 'online':
 				terminal.set_online_number(msg['data']['number']);
