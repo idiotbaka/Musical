@@ -24,9 +24,8 @@ function ws_start() {
 		else {
 			terminal.set_nickname('guest');
 		}
-		if(/Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)) {
-			terminal.append('<p style="color: #ffeb3b;">You may be a safari browser user. Safari browser has disabled automatic audio playback by default.</p><p style="color: #ffeb3b;">If no music is currently playing, run the <b>"play"</b> command to turn it on manually.</p>');
-		}
+		
+		terminal.append('<p style="color: #ffeb3b;">Some browsers disable automatic audio playback of web pages.</p><p style="color: #ffeb3b;">If no music is currently playing, run the <b>"play"</b> command to turn it on manually.</p>');
 		terminal.input(true);
 	}
 

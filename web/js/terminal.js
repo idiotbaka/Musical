@@ -8,8 +8,8 @@ terminal.history_index_now = 0;
 // 歌单长度
 terminal.song_list = 0;
 // cookie相关
-terminal.allow_cookie = 0;
-terminal.cookie_pass = 0;
+terminal.allow_cookie = 1;
+terminal.cookie_pass = 1;
 terminal.nickname = '';
 // append显示内容
 terminal.append = function(html) {
@@ -149,18 +149,12 @@ terminal.get_cookie = function(name) {
 	return '';
 }
 $(function() {
-	terminal.append('\
-	<p>---------------------------------------------------------------------------------</p>\
-	<p>Music may use cookies to store some of your information.</p>\
-	<p>Such as nicknames, historical commands, etc.</p>\
-	<p>The stored information is only used to provide you with more convenient services.</p>\
-	<p>Our server will not store any user privacy data.</p>\
-	<p>Do you allow us to use cookies?</p>\
-	<br/>\
-	<p>[Y]es, I agree&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[N]o, thanks</p>\
-	<p>---------------------------------------------------------------------------------</p>');
-	$('#nickname').html('Please enter Y or N:');
+	nickname = terminal.get_cookie('nickname');
+	if(nickname) {
+		$('#nickname').html(nickname);
+	}
 	$('#nickname').css('display', '');
+	$('.can_input').css('display', '');
 
 	$("#input_hidden")[0].focus();
 	$(document).click(function(){
@@ -173,30 +167,10 @@ $(function() {
 	});
 	$('#buoy').css('opacity', '1');
 	$('#buoy').html('&nbsp;');
+	ws_start();
 	$(document).keydown(function(event) {
 		// 回车事件
 		if(event.keyCode == 13) {
-			if(terminal.cookie_pass == 0) {
-				var command = $('#input_hidden').val();
-				$('.show_box').append('<p>Please enter Y or N:' + terminal.escape(command) + '</p>');
-				$('#input').html('');
-				$('#input_hidden').val('');
-				if(command.trim() == 'Y' || command.trim() == 'y') {
-					terminal.input(false);
-					$('.show_box').append('<p>Start connecting to server...</p>');
-					terminal.cookie_pass = 1;
-					terminal.allow_cookie = 1;
-					ws_start();
-				}
-				else if(command.trim() == 'N' || command.trim() == 'n') {
-					terminal.input(false);
-					$('.show_box').append('<p>Start connecting to server...</p>');
-					terminal.cookie_pass = 1;
-					terminal.allow_cookie = 0;
-					ws_start();
-				}
-				return;
-			}
 			var command = $('#input_hidden').val();
 			$('.show_box').append('<p>' + terminal.escape($('#nickname').html()) + '@Musical:~# ' + terminal.escape(command) + '</p>');
 			$('#input').html('');
