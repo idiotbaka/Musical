@@ -2,17 +2,17 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-	<title>DEMO</title>
+	<title>Musical</title>
 	<link rel="stylesheet" href="css/main.css?v=0115">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aplayer/1.10.1/APlayer.min.css" integrity="sha256-uqQQGnDcmRKvhKwc5Vm4XT1GQ2oV6t1U0NR2N9tV+BQ=" crossorigin="anonymous" />
 </head>
 <body>
 	<div id="music_box"></div>
 	<div class="show_box">
-		<b>Musical Demo (Build 0002)</b>
+		<b>Musical v1.0.0</b>
 		<p>Copyright (c) 2020 idiotbaka & JokerCats. All right reserved.</p>
 		<br/>
-		<p>Welcome to Musical Demo (Last updated: 2020/01/15 UTC/GMT +08:00)</p>
+		<p>Welcome to Musical (Last updated: 2020/02/23 UTC/GMT +08:00)</p>
 		<br/>
 		<p> * Documentation:&nbsp;https://github.com/idiotbaka/Musical/blob/master/README.md</p>
 		<p> * Github:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://github.com/idiotbaka/Musical</p>

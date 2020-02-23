@@ -17,6 +17,16 @@ if(!defined('GLOBAL_START'))
 // 数据库
 global $db;
 $db = new \Workerman\MySQL\Connection(DB_HOST, DB_PORT, DB_USER, DB_PWD, DB_NAME);
+$tables_exists = $db->query('SHOW TABLES LIKE \'album_hot_music\';');
+if(!sizeof($tables_exists)) {
+	$sqls = file_get_contents('musical.sql');
+	$sqls = explode(';', $sqls);
+	foreach ($sqls as $sql) {
+		if(trim($sql)) {
+			$db->query(trim($sql));
+		}
+	}
+}
 
 // 网易云音乐API
 global $netease_api;

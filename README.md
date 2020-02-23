@@ -1,9 +1,10 @@
 ### 介绍
- 基于PHP+Workerman开发的网页音乐电台
+ 基于PHP+Workerman开发的网页音乐电台，支持在线聊天、搜索歌曲、点歌等。  
+ 点歌使用了网易云音乐api。
 
 ### 准备
- 需要PHP5.6+的版本，以及Mysql数据库。  
- 需要安装BCMath, Curl, OpenSSL, pcntl, posix扩展。  
+ 运行环境：PHP（>=5.6）、Mysql数据库。  
+ PHP需要安装BCMath, Curl, OpenSSL, pcntl, posix扩展。  
  如果并发超过1024连接数，需要额外安装event和libevent扩展。
 
 ### 安装
@@ -16,8 +17,7 @@ cd Musical
 ```
 composer install
 ```
- 3.复制配置文件Config_bak.php重命名为Config.php，配置对应参数。   
- 4.导入数据表musical.sql到数据库中。
+ 3.填写配置文件Config.php。   
 
 ### 运行
  目前仅支持linux系统，命令行执行 `php start.php start` 启动。  
