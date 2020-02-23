@@ -32,7 +32,7 @@ composer install
  | order <index> | 点歌，需要先搜索歌曲 |
  | say <message> | 发送聊天消息 |
  | nickname <name> | 设置聊天昵称 |
- | vol <volume> | 调整音量（0~1，如0.5 |
+ | vol <volume> | 调整音量（0~1，如0.5） |
  
  ### 常见问题
  **1. 打开网页后歌曲不播放**  
