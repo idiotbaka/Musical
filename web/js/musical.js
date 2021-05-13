@@ -15,34 +15,36 @@ musical.progress = false;
 musical.vol = 1;
 // 播放新的音频
 musical.play_new = function(url) {
-	if(musical.is_play == true) {
-		musical.is_play = false;
-	}
-	musical.ap = new APlayer({
-	    container: document.getElementById('music_box'),
-	    autoplay: true,
-	    loop: 'none',
-	    volume: 0,
-	    audio: [{
-	        name: '0',
-	        artist: '0',
-	        url: url
-	    }]
-	});
-	musical.ap.on('ended', function() {
-		musical.is_play = false;
-		musical.progress = false;
-		musical.ended();
-	});
-	musical.ap.on('progress', function() {
-		musical.is_play = true;
-		if(musical.progress == false) {
-			musical.progress = true;
-			musical.played();
-			musical.volume(musical.vol);
-		}
-	});
-	return true;
+        if(musical.is_play == true) {
+                musical.is_play = false;
+        }
+        musical.ap = new APlayer({
+            container: document.getElementById('music_box'),
+            autoplay: true,
+            loop: 'none',
+            volume: musical.vol,
+            audio: [{
+                name: '0',
+                artist: '0',
+                url: url
+            }]
+        });
+        musical.ap.on('ended', function() {
+                musical.is_play = false;
+                musical.progress = false;
+                musical.ended();
+        });
+        musical.ap.on('playing', function() {
+                if(musical.progress == false) {
+                        console.log(step);
+                        musical.progress = true;
+                        setTimeout(function() {musical.played()}, 1000);
+                        musical.is_play = true;
+                        //musical.seek(step);
+                        musical.volume(musical.vol);
+                }
+        });
+        return true;
 };
 // 暂停播放
 musical.pause = function() {
